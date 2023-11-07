@@ -53,6 +53,14 @@ async function run() {
         res.send(result)
     })
 
+    app.get('/wishlist/:email',async(req,res)=>{
+        const email = req.params.email;
+        const query = {'user.email':email};
+        const cursor = wishlistCollection.find(query);
+        const result = await cursor.toArray();
+        res.send(result)
+    })
+
 
 
 
