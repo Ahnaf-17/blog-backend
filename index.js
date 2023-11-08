@@ -45,6 +45,26 @@ async function run() {
         res.send(result)
     })
 
+    app.put('/blogUpdate/:id',async(req,res)=>{
+        const id = req.params.id;
+        const filter = {_id: new ObjectId(id)}
+        const options = {upsert: true}
+        const updateBlog = req.body;
+        const blog = {
+            $set: {
+                title : updateBlog.title,
+                category : updateBlog.category,
+                image : updateBlog.image,
+                short_description : updateBlog.short_description,
+                long_description : updateBlog.long_description,
+                datetime : updateBlog.datetime
+            }
+            
+        }
+        const result = await blogCollection.updateOne(filter,blog,options)
+        res.send(result)
+    })
+
     // wishlist 
 
     app.post('/wishlist', async(req,res)=>{
@@ -64,7 +84,7 @@ async function run() {
     app.delete('/wishlist/:id',async(req,res)=>{
         const id = req.params.id;
         const query = {_id: new ObjectId(id)}
-        const result = await blogCollection.deleteOne(query)
+        const result = await wishlistCollection.deleteOne(query)
         res.send(result)
     })
 
