@@ -29,7 +29,8 @@ async function run() {
     await client.connect();
 
     const blogCollection = client.db('blogDB').collection('blogInfo');
-    const wishlistCollection = client.db('blogDB').collection('wishlist')
+    const wishlistCollection = client.db('blogDB').collection('wishlist');
+    const commentCollection = client.db('blogDB').collection('comment'); 
 
     // blog 
     app.get('/blogs', async(req,res)=>{
@@ -85,6 +86,13 @@ async function run() {
         const id = req.params.id;
         const query = {_id: new ObjectId(id)}
         const result = await wishlistCollection.deleteOne(query)
+        res.send(result)
+    })
+
+    // comment 
+    app.post('/comment', async(req,res)=>{
+        const comment = req.body;
+        const result = await commentCollection.insertOne(comment);
         res.send(result)
     })
 
