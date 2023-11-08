@@ -95,7 +95,13 @@ async function run() {
         const result = await commentCollection.insertOne(comment);
         res.send(result)
     })
-
+    app.get('/wishlist/:id',async(req,res)=>{
+        const id = req.params.id;
+        const query = {'user.id':id};
+        const cursor = commentCollection.find(query);
+        const result = await cursor.toArray();
+        res.send(result)
+    })
 
 
 
