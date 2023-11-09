@@ -38,7 +38,6 @@ async function run() {
         const result = await cursor.toArray()
         res.send(result)
     })
-    // cmt 
 
 
     app.post('/blogs',async(req,res)=>{
@@ -48,7 +47,19 @@ async function run() {
         res.send(result)
     })
 
-    app.put('/blogUpdate/:id',async(req,res)=>{
+    // update blog 
+    app.get('/blogs/:id',async(req,res)=>{
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)}
+        const result = await blogCollection.findOne(query)
+        res.send(result)
+    })
+
+
+
+    app.put('/blogs/:id',async(req,res)=>{
+        const updatedBlog = req.body;
+        console.log(updatedBlog);
         const id = req.params.id;
         const filter = {_id: new ObjectId(id)}
         const options = {upsert: true}
@@ -93,20 +104,27 @@ async function run() {
 
     // comment 
     app.post('/comment', async(req,res)=>{
-        const comment = req.body;
+        // const comment = req.body;
         console.log(comment)
         const result = await commentCollection.insertOne(comment);
         res.send(result)
 
     })
-    app.get('/comment/:id',async(req,res)=>{
-        const id = req.params.id;
-        const query = {'user.id':id};
-        const cursor = commentCollection.find(query);
-        const result = await cursor.toArray();
-        console.log('result :',result)
+    app.get('/comment', async(req,res)=>{
+        const cursor = commentCollection.find();
+        const result = await cursor.toArray()
         res.send(result)
     })
+
+
+    // app.get('/comment/:id',async(req,res)=>{
+    //     const id = req.params.id;
+    //     const query = {'user.id':id};
+    //     const cursor = commentCollection.find(query);
+    //     const result = await cursor.toArray();
+    //     console.log('result :',result)
+    //     res.send(result)
+    // })
 
 
 
